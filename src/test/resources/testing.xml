@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite
+        name="Test suite"
+        parallel="tests">
+
+    <listeners>
+        <listener class-name="utils.TestListener"/>
+        <listener class-name="utils.AnnotationTransformer"/>
+    </listeners>
+
+    <test name="Thread 1">
+        <classes>
+            <class name="tests.LoginTest">
+                <methods>
+                    <include name="checkLoginWithPositiveCred"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+    <test name="Thread 2">
+        <classes>
+            <class name="tests.LocatorTest"/>
+            <class name="tests.CartTest"/>
+        </classes>
+    </test>
+</suite>
