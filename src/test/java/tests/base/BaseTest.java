@@ -9,10 +9,7 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.ITestContext;
 import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
-import pages.CartPage;
-import pages.CheckoutPage;
-import pages.LoginPage;
-import pages.ProductsPage;
+import pages.*;
 import utils.TestListener;
 
 import java.time.Duration;
@@ -26,12 +23,16 @@ public class BaseTest {
     protected ProductsPage productsPage;
     protected CartPage cartPage;
     protected CheckoutPage checkoutPage;
-    protected SoftAssert softAssert = new SoftAssert();
+    protected CheckoutOverviewPage checkoutOverviewPage;
+    protected CheckoutCompletePage checkoutCompletePage;
+    protected SoftAssert softAssert;
 
     @Parameters({"browser"})
-    @BeforeMethod (alwaysRun = true)
+    @BeforeMethod(alwaysRun = true)
     @Description("Настройка браузера")
     public void setUp(@Optional("chrome") String browser, ITestContext iTestContext) {
+        softAssert = new SoftAssert();
+
         if (browser.equalsIgnoreCase("chrome")) {
             ChromeOptions options = new ChromeOptions();
             HashMap<String, Object> chromePrefs = new HashMap<>();
@@ -47,23 +48,24 @@ public class BaseTest {
             driver = new FirefoxDriver();
             driver.manage().window().maximize();
         }
+
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+
         loginPage = new LoginPage(driver);
         productsPage = new ProductsPage(driver);
         cartPage = new CartPage(driver);
         checkoutPage = new CheckoutPage(driver);
+        checkoutOverviewPage = new CheckoutOverviewPage(driver);
+        checkoutCompletePage = new CheckoutCompletePage(driver);
 
         iTestContext.setAttribute("driver", driver);
     }
 
-    @AfterMethod (alwaysRun = true)
+    @AfterMethod(alwaysRun = true)
     @Description("Закрытие браузера")
-    public void tearDawn() {
-        driver.quit();
-    }
-
-    protected void loginInSauceDemo() {
-        loginPage.open();
-        loginPage.login("standard_user", "secret_sauce");
+    public void tearDown() {
+        if (driver != null) {
+            driver.quit();
+        }
     }
 }
-
