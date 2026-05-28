@@ -1,5 +1,6 @@
 package pages;
 
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
@@ -18,10 +19,12 @@ public class CheckoutPage extends BasePage {
         super(driver);
     }
 
+    @Step("Получить заголовок страницы")
     public String getTitleOfCheckout() {
         return driver.findElement(TITLE_OF_CHECKOUT).getText();
     }
 
+    @Step("Переход в Overview с заполнеными полями {First Name}, {Last Name}, {Zip/Postal Code}")
     public void continueCheckout(String firstname, String lastname, String zippostalcode) {
         driver.findElement(FIRSTNAME_FIELD).sendKeys(firstname);
         driver.findElement(LASTNAME_FIELD).sendKeys(lastname);
@@ -29,10 +32,12 @@ public class CheckoutPage extends BasePage {
         driver.findElement(CONTINUE_BUTTON).click();
     }
 
+    @Step("Получение ошибки на странице Checkout")
     public String getErrorMessageCheckout() {
         return driver.findElement(ERROR_MESSAGE_IN_CHEKOUT).getText();
     }
 
+    @Step("Отмена чекаута")
     public void cancelCheckoutBtn() {
         driver.findElement(CANCEL_CHECKOUT_BUTTON).click();
     }
